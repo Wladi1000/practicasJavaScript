@@ -1,37 +1,10 @@
-const fs = require('fs');
-// const { TextEncoderStream } = require('node:stream/web');
+// la variable no se llama igual porque el modulo retorna una clase
+const EventEmitter = require('events');
 
-// fs.readFile('index.html', 'utf-8', (err, contenido) => {
-//   if (err){
-//     // console.log(err);
-//     throw err;
-//   }else{
-//     console.log(contenido);
-//   }
-//   console.log('Mensaje...')
-// });
+const emisorProductos = new EventEmitter();
 
-// fs.rename('./juan.html', 'index.html', (err)=>{
-//   if (err){
-//     console.log('no se realizo el cambio')
-//     throw TextEncoderStream;
-//   }
-//   console.log('cambio exitoso');
-// })
+emisorProductos.on('compra', () => {
+  console.log('Se realizo una compra.');
+});
 
-// fs.unlink('./main.html', (err) =>{
-//   if (err){
-//     throw err;
-//   }
-//   console.log('Eliminado con exito');
-// })
-
-// for ( i = 1; i<100000; i++) {
-
-//   fs.appendFileSync('./virus.txt', i + ' soy un gusano \n', (err)=>{
-//     if (err){
-//       throw err
-//     }
-//     console.log(`virus ejecutandose ${i}`);
-//   });
-// };
+emisorProductos.emit('compra');
