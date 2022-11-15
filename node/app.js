@@ -1,21 +1,21 @@
-// Como trabajr con promesas
+const statusPedido = () =>{
+  return Math.random() < 0.8;
+};
 
-const promesaCumplida = false;
+const miPedidoPizza = new Promise((resolve, reject) =>{
 
-const miPromesa = new Promise((resolve, reject) =>{
-
-  setTimeout(() =>{
-    promesaCumplida ? resolve('Promesa cumplida!') : reject('Promesa rechazada...');
-  },3000)
-
+  setTimeout(() => {
+    statusPedido() ? resolve('Pedido exitoso! Pizza esta en camino'): reject('transaccion fallida. Intente de nuevo');
+  }, 3000);
 });
 
-const manejarPromesaCumplida = (valor) =>{
-  console.log(valor);
+
+const manejarPedido = (mensajeConfirmacion) => {
+  console.log(mensajeConfirmacion);
 };
 
-const manejarPromesaRechazada = (razonRechazo)=>{
-  console.log(razonRechazo);
+const rechazarPedido = (mensajeError) =>{
+  console.log(mensajeError);
 };
 
-miPromesa.then(manejarPromesaCumplida, manejarPromesaRechazada);
+miPedidoPizza.then(manejarPedido, rechazarPedido);
