@@ -1,11 +1,21 @@
-// la variable no se llama igual porque el modulo retorna una clase
-const EventEmitter = require('events');
+// Como trabajr con promesas
 
-const emisorProductos = new EventEmitter();
+const promesaCumplida = false;
 
+const miPromesa = new Promise((resolve, reject) =>{
 
-emisorProductos.on('compra', (total) => {
-  console.log(`Se realizo una compra por $${total}`);
+  setTimeout(() =>{
+    promesaCumplida ? resolve('Promesa cumplida!') : reject('Promesa rechazada...');
+  },3000)
+
 });
 
-emisorProductos.emit('compra', 500);
+const manejarPromesaCumplida = (valor) =>{
+  console.log(valor);
+};
+
+const manejarPromesaRechazada = (razonRechazo)=>{
+  console.log(razonRechazo);
+};
+
+miPromesa.then(manejarPromesaCumplida, manejarPromesaRechazada);
