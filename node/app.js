@@ -24,6 +24,6 @@ miPedidoPizza
   .then((mensajeConfirmacion) => {
     console.log(mensajeConfirmacion);
   })
-  .then(null, (mensajeError) =>{
+  .cath((mensajeError) =>{   //Cambio de then a cath
     console.log(mensajeError);
   })
