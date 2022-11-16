@@ -29,16 +29,34 @@ const procesarPedido = (respuesta)=>{
 // Anidar promesas asegura que se ejecuten una despues de otra, si se deja
 // cada una de forma independeinte no se asegura que una se haga despues
 // de la otra.
-ordenarProducto('lapiz')
-  .then(respuesta =>{
-    console.log('Respuesta recibida');
-    console.log(respuesta);
+// ordenarProducto('lapiz')
+//   .then(respuesta =>{
+//     console.log('Respuesta recibida');
+//     console.log(respuesta);
 
-    return procesarPedido(respuesta); // Esta llamada retorna una promesa
-  })
-  .then((respuestaProcesada)=>{
+//     return procesarPedido(respuesta); // Esta llamada retorna una promesa
+//   })
+//   .then((respuestaProcesada)=>{
+//     console.log(respuestaProcesada);
+//   })
+//   .catch((err)=>{
+//     console.log(err);
+//   });
+
+// ------------------------------------------------------------------------
+
+// Con Asyncn y await nos permite escribir codigo asincrono de forma sincrona
+
+async function realizarPedido(producto){
+
+  try {
+    const respuesta = await ordenarProducto(producto);
+    console.log('Respuesta recibida');
+    const respuestaProcesada = await procesarPedido(respuesta);
     console.log(respuestaProcesada);
-  })
-  .catch((err)=>{
-    console.log(err);
-  });
+  } catch (error) {
+      console.log(error);
+  }
+}
+
+realizarPedido('taza');
