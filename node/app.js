@@ -9,3 +9,5 @@ console.log(miURL.searchParams); // URLSearchParams { 'ordenar' => 'vistas', 'ni
 console.log(miURL.searchParams.get('ordenar')); // vistas
 
 console.log(miURL.searchParams.get('nivel')); // 1
+
+console.log(miURL.protocol); // https:
