@@ -1,66 +1,73 @@
-const http = require('http');
-const cursos = require('./cursos.js');
+const express = require('express');
+const app = express();
 
-const servidor = http.createServer((req, res) =>{
+const {infoCursos} = require('./cursos.js'); 
 
-  const {method} = req;
+// 
 
-  switch (method) {
-    case 'GET':
-      return manejarSolicitudGet(req, res);
-      break;
-    case 'POST':
-      return manejarSolicitudPOST(req, res);
-      break;
-    default:
-      console.log(`El metodo usado no puede ser manejado por el servidor. Y el metodo es ${method}`);
-      break;
+app.get('/', (req, res)=>{
+  res.send('mi primer servidor con Express. Cursos ♥')
+});
+
+app.get('/api/cursos', (req, res) =>{
+  res.send(JSON.stringify(infoCursos));
+});
+
+// Cursos de Programacion
+
+app.get('/api/cursos/programacion', (req, res) =>{
+  res.send(JSON.stringify(infoCursos.programacion));
+});
+
+app.get('/api/cursos/programacion/:lenguaje', (req, res) =>{
+  
+  const lenguaje = req.params.lenguaje;
+  const resultados =  infoCursos.programacion.filter((curso) => curso.lenguaje === lenguaje);
+
+  if ( resultados.length === 0 ){
+    return res.status(404).send(`No se encontraron cursos de ${lenguaje}`);
   }
+
+  res.status(200).send(JSON.stringify(resultados));
 
 });
 
-function manejarSolicitudGet(req, res){
-  let path = req.url;
+// Cursos de Matematicas
 
-  console.log(res.statusCode);
+app.get('/api/cursos/matematicas', (req, res) =>{
+  res.send(JSON.stringify(infoCursos.matematicas));
+});
 
-  if ( path === '/' ){
+app.get('/api/cursos/matematicas/:tema', (req, res) =>{
 
-    res.statusCode = 200;
-    return res.end('Bienvenidos a mi primer servidor y API creado por Node.js');
-  } else if( path === '/cursos' ){
+  const tema = req.params.tema;
+  const resultados = infoCursos.matematicas.filter((curso) => curso.tema === tema);
 
-    res.statusCode = 200;
-    return res.end(JSON.stringify(cursos.infoCursos));
-  }else if(path === '/cursos/programacion'){
-    res.statusCode = 200;
-    return res.end(JSON.stringify(cursos.infoCursos.programacion));
-  }else if(path === '/cursos/matematicas'){
-    res.statusCode = 200;
-    return res.end(JSON.stringify(cursos.infoCursos.matematicas));
-  }else{
-    res.statusCode = 404;
-    return res.end('El recurso solicitado no existe...');
+  if ( resultados.length === 0 ){
+    return res.status(404).send(`No se encontraron cursos de ${tema}`);
   }
-};
 
-function manejarSolicitudPOST(req, res) {
-  const path = req.url;
-  
-  if (path === '/cursos/programacion'){
+  res.status(200).send(JSON.stringify(resultados));
 
-    res.statusCode = 200;
-    res.end('El servidor recibio una solicitud POST en programacion')
+});
+
+app.get('/api/cursos/programacion/:lenguaje/:nivel', (req, res) => {
+
+  const lenguaje = req.params.lenguaje;
+  const nivel = req.params.nivel;
+
+  const resultados = infoCursos.programacion.filter( (curso) => curso.lenguaje === lenguaje && curso.nivel === nivel);
+
+  if ( resultados.length === 0 ){
+    return res.status(404).send(`No se encontraron cursos de ${lenguaje} de ${nivel}`);
   }
-}
 
+  res.status(200).send(JSON.stringify(resultados));
 
+});
 
+const PUERTO = process.env.PORT || 3000;
 
-
-
-// iniciar servidor
-const PUERTO = 3000;
-servidor.listen(PUERTO, ()=>{
-  console.log(`El servidor esta escuchando en el puerto ${PUERTO}...`);
+app.listen(PUERTO, ()=>{
+  console.log(`Escuchando en el puerto ${PUERTO}...`);
 });
